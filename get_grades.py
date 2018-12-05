@@ -91,15 +91,15 @@ def query_score():
 					now_texts.append(text)
 
 				if now_texts == all_texts:
+					print('当前无成绩更新')
 					time.sleep(300)
 					continue
 
 				else:
 					message = ''
 					for index in range(0, len(all_texts), 7):
-						message += "--------------------成绩详情--------------------"
 						message += '%s:%s\n' % (all_texts[index+2], all_texts[index+6])
-						message += "------------------------------------------------"
+						
 					send_mail(to_email=[''],
 							 subject='成绩详情', message=message)
 					all_texts = now_texts
@@ -120,7 +120,9 @@ def send_mail(to_email, subject, message, server='smtp.xx.com', from_email=''):
 	msg['To'] = ', '.join(to_email)
 	msg.set_content(message)
 	server = smtplib.SMTP(server)
-	server.set_debuglevel(1)
+	#server.set_debuglevel(1)
+
+	# 发送邮箱的帐号与密码
 	server.login(from_email, '')
 	server.send_message(msg)
 	server.quit()

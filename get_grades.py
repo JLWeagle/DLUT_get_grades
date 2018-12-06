@@ -1,16 +1,30 @@
 import requests
 import time
 import smtplib
+import json
 from email.message import EmailMessage
 from bs4 import BeautifulSoup
+
+'''
+    请修改conf.json配置文件内容，
+    以使获取成绩等功能正常工作。
+'''
+
+with open('confs.json') as f:
+    confs = json.load(f)
 
 
 class Query:
 
+    '''
+        用于初始化登录信息，
+        并获取成绩结果。
+    '''
+
     def __init__(self, username, password):
         self.usr = username
         self.psw = password
-        self.posturl = 'http://zhjw.dlut.edu.cn/loginAction.do'
+        self.posturl = confs["url"]["post_url"]
         self.postData = {'zjh': self.usr, 'mm': self.psw}
 
     def login(self):
@@ -27,26 +41,28 @@ class Query:
         return flag
 
     def get_term_score(self):
+        # 获取本学期成绩
         self.score = s.get(
-            'http://zhjw.dlut.edu.cn/bxqcjcxAction.do').text
+            confs["url"]["term_score"]).text
 
     def get_all_score(self):
+        # 获取全部成绩
         self.score = s.get(
-            'http://zhjw.dlut.edu.cn/gradeLnAllAction.do?type=ln&oper=fainfo&fajhh=6989').text
+            confs["url"]["all_score"]).text
 
     def save_html(self):
+        # 将中文成绩单保存至本地
         self.score = s.get(
-            'http://zhjw.dlut.edu.cn/reportFiles/student/cj_zwcjd_all.jsp').text
+            confs["url"]["save_html"]).text
         html_file = open("score.html", "w")
         html_file.write(self.score)
         html_file.close()
 
 
 def query_score():
-    print('请输入您的学号：')
-    usr = input()
-    print('请输入您的密码：')
-    psw = input()
+    # 登录并完成所选功能
+    usr = confs["login_info"]["username"]
+    psw = confs["login_info"]["password"]
     test = Query(usr, psw)
 
     if test.login() == True:
@@ -108,7 +124,7 @@ def query_score():
                         message += '%s:%s\n' % (all_texts[index+2],
                                                 all_texts[index+6])
 
-                    send_mail(to_email=[''],
+                    send_mail(to_email=[confs["receive_email"]["username"]],
                               subject='成绩详情', message=message)
                     all_texts = now_texts
 
@@ -119,10 +135,13 @@ def query_score():
             print("------------------------------------------------")
 
     else:
-        query_score()
+        return
 
 
-def send_mail(to_email, subject, message, server='smtp.xx.com', from_email=''):
+def send_mail(to_email, subject, message,
+              server=confs["send_email"]["server"],
+              from_email=confs["send_email"]["username"]):
+    # 用于发送邮件
     msg = EmailMessage()
     msg['Subject'] = subject
     msg['From'] = from_email
@@ -130,9 +149,7 @@ def send_mail(to_email, subject, message, server='smtp.xx.com', from_email=''):
     msg.set_content(message)
     server = smtplib.SMTP(server)
     # server.set_debuglevel(1)
-
-    # 发送邮箱的帐号与密码
-    server.login(from_email, '')
+    server.login(from_email, confs["send_email"]["password"])
     server.send_message(msg)
     server.quit()
     print('发送成功！')

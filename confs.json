@@ -1,0 +1,20 @@
+{
+	"login_info": {
+		"username": "801200000",
+		"password": "000000"
+	},
+	"send_email": {
+		"server": "smtp.whatever.com",
+		"username": "example@whatever.com",
+		"password": "123456"
+	},
+	"receive_email": {
+		"username": "example@whatever.com"
+	},
+	"url": {
+		"post_url": "http://zhjw.dlut.edu.cn/loginAction.do",
+		"term_score": "http://zhjw.dlut.edu.cn/bxqcjcxAction.do",
+		"all_score": "http://zhjw.dlut.edu.cn/gradeLnAllAction.do?type=ln&oper=fainfo&fajhh=6989",
+		"save_html": "http://zhjw.dlut.edu.cn/reportFiles/student/cj_zwcjd_all.jsp"
+	}
+}

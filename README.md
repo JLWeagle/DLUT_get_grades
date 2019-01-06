@@ -15,6 +15,6 @@
 ## 使用方法  
 1. 修改`confs.json`内的登录、收发邮件邮箱信息。  
 2. 到程序目录下运行`get_grades.py`  
-``` 
+```
  python3 get_grades.py
 ```

@@ -75,7 +75,10 @@ def query_score():
         print('3 - 保存成绩单到本地')
         print('4 - 成绩更新时发送成绩至邮箱')
 
-        choice = input()
+        if confs["login_info"]["defaultmode"]:
+            choice = confs["login_info"]["defaultmode"]
+        else:
+            choice = input()
 
         if choice == '1' or choice == '4':
             test.get_term_score()

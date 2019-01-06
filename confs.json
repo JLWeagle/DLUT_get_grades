@@ -1,7 +1,8 @@
 {
 	"login_info": {
 		"username": "801200000",
-		"password": "000000"
+		"password": "000000",
+		"defaultmode": ""
 	},
 	"send_email": {
 		"server": "smtp.whatever.com",

@@ -126,9 +126,9 @@ def query_score():
 
                 else:
                     message = ''
-                    for index in range(0, len(all_texts), 7):
-                        message += '%s:%s\n' % (all_texts[index+2],
-                                                all_texts[index+6])
+                    for index in range(0, len(now_texts), 7):
+                        message += '%s:%s\n' % (now_texts[index+2],
+                                                now_texts[index+6])
 
                     send_mail(to_email=[confs["receive_email"]["username"]],
                               subject='成绩详情', message=message)
